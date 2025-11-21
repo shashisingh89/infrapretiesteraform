@@ -1,5 +1,5 @@
 
-variable "storage_accounts" {
+ variable "storage_accounts" {
   type = map(object(
     {
       name       = string                # Name of the Resource Group
