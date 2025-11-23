@@ -15,10 +15,10 @@ steps:
     targetType: 'inline'
     script: |
       # Write your PowerShell commands here.
-      az login --service-principal
-         --username $(ARM_CLIENT_ID) 
-         --password $(ARM_CLIENT_SECRET) 
-         --tenant $(ARM_TENANT_ID)
+      az login --service-principal`
+         --username "$(ARM_CLIENT_ID)"` 
+         --password "$(ARM_CLIENT_SECRET)"` 
+         --tenant "$(ARM_TENANT_ID)"
 - task: PowerShell@2
   displayName: Terraform init,Fmt
   inputs:
