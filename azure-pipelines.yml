@@ -9,10 +9,30 @@ trigger:
 pool: infraaagent
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: PowerShell@2
+  displayName: Az login
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      az login --service-principal
+         --username $(ARM_CLIENT_ID) 
+         --password $(ARM_CLIENT_SECRET) 
+         --tenant $(ARM_TENANT_ID)
+- task: PowerShell@2
+  displayName: Terraform init,Fmt
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      cd environments/dev
+      terraform init
+      terraform fmt
+      terraform validate
+- task: PowerShell@2
+  displayName: Terraform plan
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      terraform plan
