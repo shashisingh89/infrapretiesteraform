@@ -17,8 +17,8 @@ crash.*.log
 *.bak
 
 # Local override files
-*.tfvars
-*.tfvars.json
+# *.tfvars
+# *.tfvars.json
 override.tf
 override.tf.json
 *_override.tf
