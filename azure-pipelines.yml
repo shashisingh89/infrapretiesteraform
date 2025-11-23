@@ -2,6 +2,8 @@ trigger:
 - main
 
 pool: infraaagent
+variables:
+- group: AzureSecrets
 
 steps:
 - task: PowerShell@2
