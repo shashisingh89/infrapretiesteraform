@@ -31,4 +31,5 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      terraform plan
+     cd infrasetting/environments/dev
+     terraform plan
