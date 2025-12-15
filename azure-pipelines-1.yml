@@ -6,7 +6,48 @@ stages:
   - stage: Infrastructure Init
     displayName: Infrastructure create
     jobs:
-      - job: init 
+      - job: TerraformInstaller 
+        steps:
+        - task: TerraformInstaller@1
+          inputs:
+            terraformVersion: 'latest'
+      - job: init
+        steps:
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)\infrasetting\environments\dev'
+            backendServiceArm: 'infraservices'
+            backendAzureRmResourceGroupName: 'product-rg'
+            backendAzureRmStorageAccountName: 'productstgs4'
+            backendAzureRmContainerName: 'pipelinecontainer'
+            backendAzureRmKey: 'pipeline.tfstate'
+      - job: vaildate
+        displayName: Configuration Validation
+        steps:
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'validate'
+            workingDirectory: '$(System.DefaultWorkingDirectory)\infrasetting\environments\dev'
+  - stage: infra scaning
+    displayName: infra saning
+    jobs:
+      - job: tfsec
         steps:
         
-      
+
+
+  - stage: Infra Planning
+    displayName: Infra Planning
+    jobs:
+      - job: plan
+        steps:
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'plan'
+            workingDirectory: '$(System.DefaultWorkingDirectory)\infrasetting\environments\dev'
+            environmentServiceNameAzureRM: 'infraservices'
+
