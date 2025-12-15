@@ -37,12 +37,16 @@ stages:
           inputs:
             version: 'v1.26.0'
             dir: '$(System.DefaultWorkingDirectory)\infrasetting\environments\dev'
+            continueOnError: true
       - job: tflint
         steps:
         - task: PowerShell@2
           inputs:
             targetType: 'inline'
-            script: 'tflint'
+            script: |
+              tflint
+              tflint --init
+              tflint --recursive
             workingDirectory: '$(System.DefaultWorkingDirectory)\infrasetting\environments\dev'
   - stage: Infra_Planning
     displayName: Infra Planning
