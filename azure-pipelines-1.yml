@@ -23,9 +23,6 @@ stages:
             backendAzureRmStorageAccountName: 'productstgs4'
             backendAzureRmContainerName: 'pipelinecontainer'
             backendAzureRmKey: 'pipeline.tfstate'
-      - job: vaildate
-        displayName: Configuration Validation
-        steps:
         - task: TerraformTask@5
           inputs:
             provider: 'azurerm'
