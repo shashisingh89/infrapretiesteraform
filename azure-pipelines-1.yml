@@ -1,0 +1,12 @@
+trigger:
+- main
+
+pool: infraaagent
+stages:
+  - stage: Infrastructure Init
+    displayName: Infrastructure create
+    jobs:
+      - job: init 
+        steps:
+        
+      
