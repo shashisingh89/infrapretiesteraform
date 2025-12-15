@@ -34,13 +34,14 @@ stages:
       - job: tfsec
         steps:
         - task: tfsec@1
+          continueOnError: true
           inputs:
             version: 'v1.26.0'
-            continueOnError: true
             dir: '$(System.DefaultWorkingDirectory)\infrasetting\environments\dev'
       - job: tflint
         steps:
         - task: PowerShell@2
+          continueOnError: true
           inputs:
             targetType: 'inline'
             script: |
@@ -48,7 +49,6 @@ stages:
               tflint --init
               tflint --recursive
               errorActionPreference: 'continue'
-              continueOnError: true
             workingDirectory: '$(System.DefaultWorkingDirectory)\infrasetting\environments\dev'
   - stage: Infra_Planning
     displayName: Infra Planning
