@@ -58,6 +58,16 @@ stages:
         - task: TerraformTask@5
           inputs:
             provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)\infrasetting\environments\dev'
+            backendServiceArm: 'infraservices'
+            backendAzureRmResourceGroupName: 'product-rg'
+            backendAzureRmStorageAccountName: 'productstgs4'
+            backendAzureRmContainerName: 'pipelinecontainer'
+            backendAzureRmKey: 'pipeline.tfstate'
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
             command: 'plan'
             workingDirectory: '$(System.DefaultWorkingDirectory)\infrasetting\environments\dev'
             environmentServiceNameAzureRM: 'infraservices'
@@ -66,6 +76,16 @@ stages:
     jobs:
       - job: apply
         steps:
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)\infrasetting\environments\dev'
+            backendServiceArm: 'infraservices'
+            backendAzureRmResourceGroupName: 'product-rg'
+            backendAzureRmStorageAccountName: 'productstgs4'
+            backendAzureRmContainerName: 'pipelinecontainer'
+            backendAzureRmKey: 'pipeline.tfstate'
         - task: TerraformTask@5
           inputs:
             provider: 'azurerm'
