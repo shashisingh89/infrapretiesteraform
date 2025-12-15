@@ -3,7 +3,7 @@ trigger:
 
 pool: infraaagent
 stages:
-  - stage: Infrastructure Init
+  - stage: Infrastructure_Init
     displayName: Infrastructure create
     jobs:
       - job: TerraformInstaller 
@@ -31,15 +31,23 @@ stages:
             provider: 'azurerm'
             command: 'validate'
             workingDirectory: '$(System.DefaultWorkingDirectory)\infrasetting\environments\dev'
-  - stage: infra scaning
-    displayName: infra saning
+  - stage: Deployment_Verification
+    displayName: Deployment Verification
     jobs:
       - job: tfsec
         steps:
-        
-
-
-  - stage: Infra Planning
+        - task: tfsec@1
+          inputs:
+            version: 'v1.26.0'
+            dir: '$(System.DefaultWorkingDirectory)\infrasetting\environments\dev'
+      - job: tflint
+        steps:
+        - task: PowerShell@2
+          inputs:
+            targetType: 'inline'
+            script: 'tflint'
+            workingDirectory: '$(System.DefaultWorkingDirectory)\infrasetting\environments\dev'
+  - stage: Infra_Planning
     displayName: Infra Planning
     jobs:
       - job: plan
@@ -50,4 +58,18 @@ stages:
             command: 'plan'
             workingDirectory: '$(System.DefaultWorkingDirectory)\infrasetting\environments\dev'
             environmentServiceNameAzureRM: 'infraservices'
+  - stage: Infrastructure_Deployment
+    displayName: Infrastructure Deployment
+    jobs:
+      - job: apply
+        steps:
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'apply'
+            workingDirectory: '$(System.DefaultWorkingDirectory)\infrasetting\environments\dev'
+            commandOptions: '-auto-approve'
+            environmentServiceNameAzureRM: 'infraservices'
+
+
 
