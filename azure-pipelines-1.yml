@@ -13,6 +13,14 @@ stages:
             terraformVersion: 'latest'
       - job: init
         steps:
+
+        - task: SonarQubePrepare@8
+          inputs:
+            SonarQube: 'sonarservices'
+            scannerMode: 'cli'
+            configMode: 'manual'
+            cliProjectKey: 'shashipipeline_infrapretiesteraform_4ae83a96-643b-4298-9c0b-c6ce1212ae63'
+            cliSources: '.'
         - task: TerraformTask@5
           inputs:
             provider: 'azurerm'
@@ -93,6 +101,13 @@ stages:
             workingDirectory: '$(System.DefaultWorkingDirectory)\infrasetting\environments\dev'
             commandOptions: '-auto-approve'
             environmentServiceNameAzureRM: 'infraservices'
+        - task: SonarQubeAnalyze@8
+          inputs:
+            jdkversion: 'JAVA_HOME_17_X64'
+
+        - task: SonarQubePublish@8
+          inputs:
+            pollingTimeoutSec: '300'
 
 
 
